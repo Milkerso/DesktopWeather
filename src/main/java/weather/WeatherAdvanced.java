@@ -1,10 +1,6 @@
 package weather;
 
 import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -19,7 +15,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -29,13 +24,12 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import service.DataFile;
 import service.Request;
-import service.ResponseWeather;
 import service.ResponseWeatherAdvanced;
 
 public class WeatherAdvanced extends Application{
 	private Stage primaryStage;
 	private MainApp mainApp;
-	private ResponseWeatherAdvanced now;
+	private ResponseWeatherAdvanced nextDay;
 	private String weatherJson;
 	private Label cityLabel;
 	private Label windLabel;
@@ -52,7 +46,8 @@ public class WeatherAdvanced extends Application{
 	private Label humidityDescription;
 	
 	private Label tempNightLabel;
-	
+    ImageView imageView;
+    Image logoImage;
 	private Label tempNightDescription;
 	
 
@@ -80,42 +75,30 @@ public class WeatherAdvanced extends Application{
 	
 		String CITY=Configuration.city;
 		final String APP_ID = "cef62a4aa44dbbdb924305751c12817d";
-		final String WEATHER_URL = "http://api.openweathermap.org/data/2.5/forecast/daily?q="+ CITY +"&units=metric&APPID=" + APP_ID+ "&cnt=5";
+		final String WEATHER_URL = "http://api.openweathermap.org/data/2.5/forecast/daily?q="+ CITY +"&units=metric&APPID=" + APP_ID+ "&cnt=6";
 		final Gson gson = new GsonBuilder().create();
-		if(netIsAvailable())
+		if(dataFile.netIsAvailable())
 	    {
 	    	weatherJson = Request.getRawWeather(WEATHER_URL);
-		    now = gson.fromJson(weatherJson, ResponseWeatherAdvanced.class);
+		    nextDay = gson.fromJson(weatherJson, ResponseWeatherAdvanced.class);
 		    dataFile.saveToFile("dataWeatherAdvanced.csv", weatherJson);
 	    }
 	    else {
 	    	
 	    	weatherJson=dataFile.readToFile("dataWeatherAdvanced.csv");
-	    	now = gson.fromJson(weatherJson, ResponseWeatherAdvanced.class);
+	    	nextDay = gson.fromJson(weatherJson, ResponseWeatherAdvanced.class);
 	    
 	    }
 
 	}
 	
-	private  boolean netIsAvailable() {
-	    try {
-	        final URL url = new URL("http://www.google.com");
-	        final URLConnection conn = url.openConnection();
-	        conn.connect();
-	        conn.getInputStream().close();
-	        return true;
-	    } catch (MalformedURLException e) {
-	        throw new RuntimeException(e);
-	    } catch (IOException e) {
-	        return false;
-	    }
-	}
+	
 	private void initStage() {
 		
 		
 		openService();
 		 
-		String path = System.getProperty("user.dir") + "\\src\\main\\java\\Icons\\";
+		
 		
 		GridPane grid = new GridPane();
 		grid.setAlignment(Pos.CENTER);
@@ -123,12 +106,11 @@ public class WeatherAdvanced extends Application{
 		grid.setHgap(30);
 		grid.setVgap(25);
 		grid.setPadding(new Insets(40, 40, 40, 40));
-		final ImageView imageView = new ImageView();
-		final Image logoImage = new Image(new File(path + "svg\\"+now.getList().get(Menu.choiceDay).getWeather().get(0).getIcon() +".png").toURI().toString());
+		imageView = new ImageView();
 		
 		imageView.setFitHeight(300);
 		imageView.setFitWidth(300);
-		imageView.setImage(logoImage);
+		
 
 		final HBox pictureRegion = new HBox();
 		pictureRegion.setAlignment(Pos.TOP_CENTER);
@@ -139,61 +121,61 @@ public class WeatherAdvanced extends Application{
 
 		cityLabel = new Label("");
 		grid.add(cityLabel, 1, 1);
-		cityLabel.getStyleClass().add("userLogin");
+		cityLabel.getStyleClass().add("label");
 	
 		tempLabel = new Label("");
 		grid.add(tempLabel, 1, 2);
-		tempLabel.getStyleClass().add("userLogin");
+		tempLabel.getStyleClass().add("label");
 
 		tempNightLabel = new Label("");
 		grid.add(tempNightLabel, 1, 3);
-		tempNightLabel.getStyleClass().add("userLogin");
+		tempNightLabel.getStyleClass().add("label");
 
 		pressureLabel = new Label("");
 		grid.add(pressureLabel, 1, 4);
-		pressureLabel.getStyleClass().add("userLogin");
+		pressureLabel.getStyleClass().add("label");
 		
 		humidityLabel = new Label("");
 		grid.add(humidityLabel, 1, 5);
-		humidityLabel.getStyleClass().add("userLogin");
+		humidityLabel.getStyleClass().add("label");
 		
 		windLabel = new Label("Wind: ");
 		grid.add(windLabel, 1, 6);
-		windLabel.getStyleClass().add("userLogin");
+		windLabel.getStyleClass().add("label");
 		
 		cityDescription = new Label("City name: ");
 		grid.add(cityDescription, 0, 1);
-		cityDescription.getStyleClass().add("userLogin");
+		cityDescription.getStyleClass().add("label");
 	
 		tempDescription = new Label("Day Temperature :");
 		grid.add(tempDescription, 0, 2);
-		tempDescription.getStyleClass().add("userLogin");
+		tempDescription.getStyleClass().add("label");
 		
 		tempNightDescription = new Label("Night Temperature :");
 		grid.add(tempNightDescription, 0, 3);
-		tempNightDescription.getStyleClass().add("userLogin");
+		tempNightDescription.getStyleClass().add("label");
 		
 		pressureDescription = new Label("Pressure: ");
 		grid.add(pressureDescription, 0, 4);
-		pressureDescription.getStyleClass().add("userLogin");
+		pressureDescription.getStyleClass().add("label");
 		
 		humidityDescription = new Label("Humidity: ");
 		grid.add(humidityDescription, 0, 5);
-		humidityDescription.getStyleClass().add("userLogin");
+		humidityDescription.getStyleClass().add("label");
 		
 		windDescription = new Label("Wind Strength:");
 		grid.add(windDescription, 0, 6);
-		windDescription.getStyleClass().add("userLogin");
+		windDescription.getStyleClass().add("label");
 
 		completeLabel();
 		
 		
-		Button backButton = new Button("Backs");
+		Button backButton = new Button("Back");
 		backButton.getStyleClass().add("button-click");
 		backButton.setOnAction(event -> back());
 		backButton.setMinWidth(160);
 		backButton.setMinHeight(35);
-		GridPane.setHalignment(backButton, HPos.RIGHT);
+		GridPane.setHalignment(backButton, HPos.CENTER);
 		grid.add(backButton, 1, 7);
 		
 
@@ -235,13 +217,15 @@ public class WeatherAdvanced extends Application{
 	
 	public void completeLabel()
 	{
-
-		cityLabel.setText(now.getCity().getName());
-		tempNightLabel.setText(String.valueOf(round(now.getList().get(Menu.choiceDay).getTemp().getNight(),2)) +"\u00b0C" );
-		tempLabel.setText(String.valueOf(round(now.getList().get(Menu.choiceDay).getTemp().getDay(),2)) +"\u00b0C" );
-		pressureLabel.setText(String.valueOf(now.getList().get(Menu.choiceDay).getPressure()) +" hPa" );
-		humidityLabel.setText(String.valueOf(now.getList().get(Menu.choiceDay).getHumidity()) +"%" );
-		windLabel.setText(String.valueOf(now.getList().get(Menu.choiceDay).getSpeed()) +" m/s" );
+		String path = System.getProperty("user.dir") + "\\src\\main\\java\\Icons\\";
+		logoImage = new Image(new File(path + "svg\\"+nextDay.getList().get(Menu.choiceDay).getWeather().get(0).getIcon() +".png").toURI().toString());
+		imageView.setImage(logoImage);
+		cityLabel.setText(nextDay.getCity().getName());
+		tempNightLabel.setText(String.valueOf(round(nextDay.getList().get(Menu.choiceDay).getTemp().getNight(),2)) +"\u00b0C" );
+		tempLabel.setText(String.valueOf(round(nextDay.getList().get(Menu.choiceDay).getTemp().getDay(),2)) +"\u00b0C" );
+		pressureLabel.setText(String.valueOf(nextDay.getList().get(Menu.choiceDay).getPressure()) +" hPa" );
+		humidityLabel.setText(String.valueOf(nextDay.getList().get(Menu.choiceDay).getHumidity()) +"%" );
+		windLabel.setText(String.valueOf(nextDay.getList().get(Menu.choiceDay).getSpeed()) +" m/s" );
 		
 		
 	}

@@ -1,13 +1,12 @@
 package service;
 
-
 import java.util.List;
-
 
 public class ResponseWeather {
 
-    private int id;
-    public int getId() {
+	private int id;
+
+	public int getId() {
 		return id;
 	}
 
@@ -18,6 +17,7 @@ public class ResponseWeather {
 	public long getDt() {
 		return dt;
 	}
+
 	public void setDt(long dt) {
 		this.dt = dt;
 	}
@@ -54,40 +54,25 @@ public class ResponseWeather {
 		this.wind = wind;
 	}
 
-	public Clouds getClouds() {
-		return clouds;
-	}
+	
 
-	public void setClouds(Clouds clouds) {
-		this.clouds = clouds;
-	}
 
-	public Sys getSys() {
-		return sys;
-	}
-
-	public void setSys(Sys sys) {
-		this.sys = sys;
-	}
 
 	private long dt;
-    private String name;
-    private List<Weather> weather;
-    private Main main;
-    private Wind wind;
-    private Clouds clouds;
-    private Sys sys;
+	private String name;
+	private List<Weather> weather;
+	private Main main;
+	private Wind wind;
 
-   
 
-    public class Weather {
+	public class Weather {
 
-        private String id;
-        private String main;
-        private String description;
-        private String icon;
+		private String id;
+		private String main;
+		private String description;
+		private String icon;
 
-        public String getId() {
+		public String getId() {
 			return id;
 		}
 
@@ -104,83 +89,65 @@ public class ResponseWeather {
 		}
 
 		@Override
-        public String toString() {
-            return "Weather{" + "id=" + id + ", main=" + main + ", description=" + description + ", icon=" + icon + '}';
-        }
-
-    }
-
-    public class Main {
-
-        private float temp;
-        private float pressure;
-        private float humidity;
-        private float temp_min;
-        private float temp_max;
-        
-
-        public float getTemp() {
-			return temp;
+		public String toString() {
+			return "Weather{" + "id=" + id + ", main=" + main + ", description=" + description + ", icon=" + icon + '}';
 		}
 
+	}
+
+	public class Main {
+
+		private float temp;
+		private float pressure;
+		private float humidity;
+		private float temp_min;
+		private float temp_max;
+
+		public float getTemp() {
+			return temp;
+		}
 
 		public float getPressure() {
 			return pressure;
 		}
 
-
 		public float getHumidity() {
 			return humidity;
 		}
-
 
 		public float getTemp_min() {
 			return temp_min;
 		}
 
-
 		public float getTemp_max() {
 			return temp_max;
 		}
 
-
 		@Override
-        public String toString() {
-            return "Main{" + "temp=" + temp + ", pressure=" + pressure + ", humidity=" + humidity + ", temp_min=" + temp_min + ", temp_max=" + temp_max + '}';
-        }
-    }
+		public String toString() {
+			return "Main{" + "temp=" + temp + ", pressure=" + pressure + ", humidity=" + humidity + ", temp_min="
+					+ temp_min + ", temp_max=" + temp_max + '}';
+		}
+	}
 
-    public class Wind {
+	public class Wind {
 
-        private float speed;
-        private float deg;
-        
+		private float speed;
+		private float deg;
 
-        public float getSpeed() {
+		public float getSpeed() {
 			return speed;
 		}
-
 
 		public float getDeg() {
 			return deg;
 		}
 
-
 		@Override
-        public String toString() {
-            return "Wind{" + "speed=" + speed + ", deg=" + deg + '}';
-        }
-    }
+		public String toString() {
+			return "Wind{" + "speed=" + speed + ", deg=" + deg + '}';
+		}
+	}
 
-    class Clouds {
-
-        private float all;
-    }
-
-    class Sys {
-
-        private long sunrise;
-        private long sunset;
-    }
 
 }
