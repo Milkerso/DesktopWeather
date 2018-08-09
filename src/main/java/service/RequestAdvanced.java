@@ -7,12 +7,11 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
-public class Request {
+public class RequestAdvanced {
 	public static String CITY;
     private static final String APP_ID = "cef62a4aa44dbbdb924305751c12817d";
     private static final String WEATHER_URL = "http://api.openweathermap.org/data/2.5/weather?q="+ CITY +"&APPID=" + APP_ID;
-	private ResponseWeather now;
-	private String weatherJson;
+  
 
     private static String getRawJson(final String whereUrl) {
         StringBuilder result = null;
@@ -51,6 +50,5 @@ public class Request {
     public static String getRawWeather(String WeatherUrl){
         return getRawJson(WeatherUrl);
     }
-    
-    
 }
+    

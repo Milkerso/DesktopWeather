@@ -25,8 +25,9 @@ public class Configuration extends Application{
 	private Stage primaryStage;
 	private MainApp mainApp;
 	private Label cityLabel;
+	private Label errorLabel;
 	private TextField cityField;
-	static String city;
+	public static String city="";
 	
 	
 	public static void main(String[] args) {
@@ -66,10 +67,11 @@ public class Configuration extends Application{
 		cityLabel.getStyleClass().add("userLogin");
 
 		cityField = new TextField();
-		cityField.setPromptText("Enter your Login");
+		cityField.setPromptText("Enter city");
 		cityField.getStyleClass().add("login-field");
 		cityField.setMinHeight(30);
 		cityField.setMinWidth(180);
+		checkCityIsNull();
 		grid.add(cityField, 1, 1);
 		
 		Button backButton = new Button("Back");
@@ -89,7 +91,9 @@ public class Configuration extends Application{
 		GridPane.setHalignment(acceptButton, HPos.LEFT);
 		grid.add(acceptButton, 1, 7);
 		
-
+		errorLabel = new Label("");
+		grid.add(errorLabel, 1, 2);
+		errorLabel.getStyleClass().add("userLogin");
 		
 		
 		
@@ -124,10 +128,37 @@ public class Configuration extends Application{
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}
-	private void accept() {	
-		Configuration.city="Warsaw";
+	public void checkCityIsNull()
+	{
+		if(Configuration.city.length()>0)
+		{
+		cityField.setText(Configuration.city);
+		}
+		else {
+			cityField.setText("Warsaw");
+		}
+	}
+	public void accept() {	
+		cityField.getText();
+		Configuration.city=cityField.getText();
+		if(checkCity()==true)
+		{
 		this.mainApp.showMenuForm();
-	
+		}
+	}
+	public boolean checkCity()
+	{
+		Weather weather=new Weather();
+		try {
+		weather.openService();
+		return true;
+		}
+		catch(Exception e)
+		{
+			errorLabel.setText("You are enter wrong City");
+			return false;
+		}
+		
 	}
 
 	public void setMainApp(MainApp mainApp) {

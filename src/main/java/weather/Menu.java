@@ -1,6 +1,9 @@
 package weather;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 import Application.MainApp;
 import javafx.application.Application;
@@ -11,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -24,6 +28,7 @@ public class Menu extends Application {
 	
 	private Stage primaryStage;
 	private MainApp mainApp;
+	public static int choiceDay;
 	
 	public void start(Stage primaryStage) {
 		this.primaryStage = primaryStage;
@@ -147,6 +152,34 @@ public class Menu extends Application {
 	}
 	
 	private void openWeatherAdvanced() {
+		
+		List<String> choices = new ArrayList<>();
+		choices.add("0.Today");
+		choices.add("1.First day in future");
+		choices.add("2.Second day in future");
+		choices.add("3.Third day in future");
+		choices.add("4.Fourth day in future");
+
+
+		ChoiceDialog<String> dialog = new ChoiceDialog<>("Today", choices);
+		dialog.setTitle("Choice day");
+		dialog.setContentText("Choose day:");
+
+		// Traditional way to get the response value.
+		Optional<String> result = dialog.showAndWait();
+		if (result.isPresent()){
+			Menu.choiceDay=Character.getNumericValue(result.get().charAt(0));
+		    System.out.println(Menu.choiceDay);
+		 
+		   
+		}
+		
+		if(Menu.choiceDay>4 || Menu.choiceDay<0)
+		{
+			Menu.choiceDay=0;
+		}
+
+
 		this.mainApp.showWeatherAdvancedForm();
 	}
 	

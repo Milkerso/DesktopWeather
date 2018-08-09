@@ -1,14 +1,9 @@
 package service;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+
 import java.util.List;
 
-/**
- * Weather representation for current conditions
- *
- * @author well
- */
+
 public class ResponseWeather {
 
     private int id;
@@ -23,7 +18,6 @@ public class ResponseWeather {
 	public long getDt() {
 		return dt;
 	}
-
 	public void setDt(long dt) {
 		this.dt = dt;
 	}
@@ -84,86 +78,9 @@ public class ResponseWeather {
     private Clouds clouds;
     private Sys sys;
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        String lineSeparator = System.getProperty("line.separator");
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM.dd HH:mm Z");
-        
-        sb.append(this.getClass().getSimpleName());
-        sb.append(" {");
-        sb.append(lineSeparator);
+   
 
-        sb.append("\tdt: ");
-        sb.append(formatter.format(new Date(dt * 1000)));
-        sb.append(lineSeparator);
-
-        sb.append("\tid: ");
-        sb.append(id);
-        sb.append(lineSeparator);
-
-        sb.append("\tname: ");
-        sb.append(name);
-        sb.append(lineSeparator);
-
-        for (Weather w : weather) {
-            sb.append("\tweather.main: ");
-            sb.append(w.main);
-            sb.append(lineSeparator);
-            sb.append("\tweather.description: ");
-            sb.append(w.description);
-            sb.append(lineSeparator);
-            sb.append("\tweather.icon: ");
-            sb.append(w.icon);
-            sb.append(lineSeparator);
-        }
-
-        sb.append("\tmain.temp: ");
-        sb.append(main.temp);
-        sb.append(lineSeparator);
-        
-        sb.append("\tmain.temp_min: ");
-        sb.append(main.temp_min);
-        sb.append(lineSeparator);
-        
-        sb.append("\tmain.temp_max: ");
-        sb.append(main.temp_max);
-        sb.append(lineSeparator);
-        
-        sb.append("\tmain.humidity: ");
-        sb.append(main.humidity);
-        sb.append(lineSeparator);
-        
-        sb.append("\tmain.pressure: ");
-        sb.append(main.pressure);
-        sb.append(lineSeparator);
-
-        sb.append("\twind.speed: ");
-        sb.append(wind.speed);
-        sb.append(lineSeparator);
-        
-        sb.append("\twind.deg: ");
-        sb.append(wind.deg);
-        sb.append(lineSeparator);
-
-        sb.append("\tclouds: ");
-        sb.append(clouds.all);
-        sb.append(lineSeparator);
-
-        sb.append("\tsunrise: ");
-        sb.append(formatter.format(new Date(sys.sunrise * 1000)));
-        sb.append(lineSeparator);
-
-        sb.append("\tsunset: ");
-        sb.append(formatter.format(new Date(sys.sunset * 1000)));
-        sb.append(lineSeparator);
-
-        sb.append('}');
-
-        return sb.toString();
-    }
-
-    class Weather {
+    public class Weather {
 
         private String id;
         private String main;
@@ -193,26 +110,63 @@ public class ResponseWeather {
 
     }
 
-    class Main {
+    public class Main {
 
         private float temp;
         private float pressure;
         private float humidity;
         private float temp_min;
         private float temp_max;
+        
 
-        @Override
+        public float getTemp() {
+			return temp;
+		}
+
+
+		public float getPressure() {
+			return pressure;
+		}
+
+
+		public float getHumidity() {
+			return humidity;
+		}
+
+
+		public float getTemp_min() {
+			return temp_min;
+		}
+
+
+		public float getTemp_max() {
+			return temp_max;
+		}
+
+
+		@Override
         public String toString() {
             return "Main{" + "temp=" + temp + ", pressure=" + pressure + ", humidity=" + humidity + ", temp_min=" + temp_min + ", temp_max=" + temp_max + '}';
         }
     }
 
-    class Wind {
+    public class Wind {
 
         private float speed;
         private float deg;
+        
 
-        @Override
+        public float getSpeed() {
+			return speed;
+		}
+
+
+		public float getDeg() {
+			return deg;
+		}
+
+
+		@Override
         public String toString() {
             return "Wind{" + "speed=" + speed + ", deg=" + deg + '}';
         }
